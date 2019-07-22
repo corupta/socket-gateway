@@ -48,7 +48,6 @@ app.use(BodyParser({
   strict: true,
   onerror(err, ctx) {
     console.log('body parse error', err);
-    ctx.throw('body parse error', 422);
   }
 }));
 
