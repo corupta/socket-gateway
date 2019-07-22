@@ -1,0 +1,49 @@
+{
+  "name": "socket-gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "engines": {
+    "node": "10.15.1"
+  },
+  "scripts": {
+    "dev": "nodemon src/index --exec babel-node",
+    "start": "node dist/index",
+    "build": "babel src --out-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "secret": "node dist/modules/auth/getToken"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/halit.ozsoy-bordatech/borda-coffee.git"
+  },
+  "author": "corupta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/halit.ozsoy-bordatech/borda-coffee/issues"
+  },
+  "homepage": "https://gitlab.com/halit.ozsoy-bordatech/borda-coffee#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/preset-env": "^7.5.2",
+    "babel-core": "^6.26.3",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "@koa/cors": "^3.0.0",
+    "dotenv": "^8.0.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-helmet": "^4.2.0",
+    "koa-logger": "^3.2.0",
+    "koa-respond": "^2.1.0",
+    "koa-router": "^7.4.0",
+    "koa-websocket": "^6.0.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2"
+  }
+}
