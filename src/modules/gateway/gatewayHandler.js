@@ -30,11 +30,11 @@ class GatewayHandler {
     // console.log("sending to handler", event, payload);
     const requestUrl = new URL(event, this._handler_url);
     request.post(requestUrl, {
-      json: {
-        gatewayToken: this._gatewayToken,
-        connectionId: gatewaySocket.uuid,
-        payload
-      }
+      headers: {
+        'GatewayToken': this._gatewayToken,
+        'ConnectionId': gatewaySocket.uuid
+      },
+      json: payload
     }, (error, response, body) => {
       // console.log("handler response", event, response.statusCode, error, body);
       if (!error && response.statusCode < 300 && response.statusCode >= 200) {
