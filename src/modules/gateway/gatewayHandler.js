@@ -7,12 +7,12 @@ const { URL } = urlModule;
 
 class GatewayHandler {
 
-  constructor(base_url, _path) {
+  constructor(base_url, handler_path) {
     this._handler_url = new URL(
-      path.join(_path, "socket/"),
+      path.join(handler_path, "socket/"),
       base_url
     );
-    this._gatewayToken = Auth.Secret.get(this._handler_url.href); // includes full path (https)
+    this._gatewayToken = Auth.Secret.get(handler_path);
     this._socketList = new Map();
   }
 
@@ -31,8 +31,8 @@ class GatewayHandler {
     const requestUrl = new URL(event, this._handler_url);
     request.post(requestUrl, {
       headers: {
-        'GatewayToken': this._gatewayToken,
-        'ConnectionId': gatewaySocket.uuid
+        'gateway-token': this._gatewayToken,
+        'connection-id': gatewaySocket.uuid
       },
       json: payload
     }, (error, response, body) => {
@@ -56,28 +56,27 @@ class GatewayHandler {
     });
   };
 
-  emitFromHandler = ({ event, gatewayToken, recipients, payload}) => {
-    if (data.gatewayToken !== this._gatewayToken) {
-      const err = new Error("Gateway Token is wrong or missing, make sure to provide valid gatewayToken.");
+  emitFromHandler = (headers, payload) => {
+    if (headers['gateway-token'] !== this._gatewayToken) {
+      const err = new Error("Gateway Token is wrong or missing, make sure to provide valid gateway-token header.");
       err.status = 401;
       throw err;
     }
-    if (recipients === 'all') {
+    const event = headers['event'];
+    let recipients = headers['recipients']
+      .split(',')
+      .map((uuid) => uuid.trim());
+    if (recipients.length === 1 && recipients[0] === 'all') {
         this.broadcast(event, payload);
         return {
           sent: this._socketList.size
         };
-    } else if (Array.isArray(recipients)) {
+    } else {
       recipients.forEach((uuid) => {
         this.emitToUUID(uuid, event, payload)
       });
       return {
         sent: recipients.length
-      };
-    } else {
-      this.emitToUUID(recipients, event, payload);
-      return {
-        sent: 1
       };
     }
   }

@@ -7,7 +7,7 @@ A node.js implementation of a simple API Gateway using websockets and socket.io
 
 Add a .env file such as
 ```dotenv
-BASE_URL=https://my-url.com
+BASE_URL=https://my-url.com/api/
 SECRET=thatsmysecret
 ```
 

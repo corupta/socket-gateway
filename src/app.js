@@ -78,7 +78,8 @@ app.ws.use(async (ctx, next) => {
 
 app.use(async (ctx, next) => {
   if (ctx.method === 'POST') {
-    ctx.body = gateway.postFromHandler(ctx.path, ctx.body);
+    const pathWithTrailingSlash = `${ctx.path}${ctx.path.endsWith('/') ? '' : '/'}`;
+    ctx.body = gateway.postFromHandler(pathWithTrailingSlash, ctx.headers, ctx.body);
   } else {
     ctx.status = 405;
     ctx.body = "Method Not Allowed!";

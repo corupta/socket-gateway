@@ -32,11 +32,11 @@ class Gateway {
       .removeConnection(gatewaySocket);
   };
 
-  postFromHandler = (path, data) => {
+  postFromHandler = (path, headers, data) => {
     this.prepareHandler(path);
     return this._handlerList
       .get(path)
-      .emitFromHandler(data);
+      .emitFromHandler(headers, data);
   }
 }
 
