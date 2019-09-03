@@ -70,6 +70,7 @@ app.use(respond());
 
 app.ws.use(async (ctx, next) => {
   const wsConnection = new WSConnection(ctx.websocket);
+  console.log('connection path', ctx.path);
   if (ctx.path !== "/socket.io/") {
     gateway.addConnection(wsConnection, ctx.path);
   }
@@ -79,7 +80,7 @@ app.ws.use(async (ctx, next) => {
 app.use(async (ctx, next) => {
   if (ctx.method === 'POST') {
     const pathWithTrailingSlash = `${ctx.path}${ctx.path.endsWith('/') ? '' : '/'}`;
-    ctx.body = gateway.postFromHandler(pathWithTrailingSlash, ctx.headers, ctx.body);
+    ctx.body = gateway.postFromHandler(pathWithTrailingSlash, ctx.headers, ctx.request.body);
   } else {
     ctx.status = 405;
     ctx.body = "Method Not Allowed!";

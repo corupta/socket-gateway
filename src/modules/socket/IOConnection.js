@@ -2,6 +2,9 @@ class IOConnection {
 
   constructor(iosocket) {
     this._iosocket = iosocket;
+    iosocket.on('error', (error) => {
+      console.log('error on socket connection', error);
+    });
   }
 
   onDisconnect = (callback) => {
@@ -18,9 +21,7 @@ class IOConnection {
     this._iosocket.use((packet, next) => {
       const [eventType, payload] = packet;
       if (typeof payload !== 'object') {
-        this.emit("error", {
-          error: `Message must be valid json!`
-        });
+        next(new Error(`Message must be valid json!`));
       } else {
         callback(eventType, payload);
       }

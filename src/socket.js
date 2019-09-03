@@ -4,14 +4,18 @@ import gateway from "./gateway";
 
 const { IOConnection } = Socket;
 
-const createSocketConnection = (server) => {
-  const socketServer = socketIO(server, { origins: "*:*"});
+const createSocketConnection = (server, opts = {}) => {
+  const socketServer = socketIO.listen(server, { origins: "*:*", ...opts});
   const io = socketServer.of(/^.*$/);
   io.on("connection", (iosocket) => {
-    const path = iosocket.nsp.name;
+    let path = iosocket.nsp.name;
+    while(path.startsWith('/socket')) {
+      path = path.substr('/socket'.length);
+    }
     const ioConnection = new IOConnection(iosocket);
     gateway.addConnection(ioConnection, path);
   });
+  return socketServer;
 };
 
 module.exports = createSocketConnection;

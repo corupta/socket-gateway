@@ -1,11 +1,14 @@
+import urlModule from "url";
 import request from "request";
 
 import GatewaySocket from "./gatewaySocket";
 import GatewayHandler from "./gatewayHandler";
 
+const { URL } = urlModule;
+
 class Gateway {
   constructor({ baseUrl }) {
-    this._baseUrl = baseUrl;
+    this._baseUrl = new URL(baseUrl);
     this._handlerList = new Map();
   }
 

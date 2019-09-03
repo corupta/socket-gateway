@@ -10,7 +10,7 @@ class GatewaySocket {
     this._gatewayHandler = null;
   }
 
-  emit = (event, payload) => {
+  emit = (event, payload = {}) => {
     this._socketConnection.emit(event, payload);
   };
 
@@ -23,7 +23,6 @@ class GatewaySocket {
     this._socketConnection.onDisconnect(
       () => gatewayHandler.removeConnection(this)
     );
-    gatewayHandler.clientToHandler(this, 'connect', {});
   };
 }
 

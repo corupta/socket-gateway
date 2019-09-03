@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "nodemon src/index --exec babel-node",
+    "dbg": "DEBUG=socket.io:server,koa:websockets nodemon src/index --exec babel-node",
     "start": "node dist/index",
     "build": "babel src --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1",

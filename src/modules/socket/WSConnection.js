@@ -20,12 +20,14 @@ class WSConnection {
       let data;
       try {
         data = JSON.parse(message);
-        const { eventType, ...payload} = data;
-        callback(eventType, payload);
       } catch(e) {
         this.emit("error", {
           error: `Message must be valid json!`
         });
+      }
+      if (data) {
+        const { eventType, ...payload} = data;
+        callback(eventType, payload);
       }
     })
   };
